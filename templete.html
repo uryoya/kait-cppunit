@@ -1,0 +1,54 @@
+<html><head>
+		<meta http-equiv="content-type" content="text/html" charset="shift_jis"> 
+		<title>xUnitレポート学籍番号: {{ user.gakuseki }},  名前: {{ user.realname }}, 課題番号:{{ kadai_name }}, {{ date }}</title></head><body text=black>
+		<h2>基本情報
+			<font size=-2>ここにQRコードが表示されないときは、ネットに繋がっていない可能性が高いです。<br/>あるいはCromeを使ってください。</font></h2>
+		<table><tr><td align=center>
+					<img src=http://chart.apis.google.com/chart?chs=150x150&cht=qr&chl="{{ user.gakuseki }},{{ kadai_name }},0" width=150 height=150>
+					<br/><font size=-2>再提出用QRコード</font>
+				</td><td>
+					<table border>
+						<tr><th>学籍番号</th><td align=center>{{ user['gakuseki'] }}</td></tr>
+						<tr><th>名前</th><td align=center>{{ user['realname'] }}</td></tr>
+						<tr><th>課題番号</th><td align=center>{{ kadai_name }}</td></tr>
+						<tr><th>実行日時</th><td align=center>{{ date }}</td></tr>
+					</table>
+				</td><td>
+					<table border>
+						<tr><th colspan=2>コンピュータ情報</th></tr>
+						<tr><th>ユーザー名</th><td align=center>{{ user['name'] }}</td></tr>
+						<tr><th>ドメイン名</th><td align=center>{{ user['domain'] }}</td></tr>
+						<tr><th>コンピュータ名</th><td align=center>{{ user['computer_name'] }}</td></tr>
+					</table>
+				</td><td align=center>
+					<img src=http://chart.apis.google.com/chart?chs=150x150&cht=qr&chl="{{ user.gakuseki }},{{ kadai_name }},1" width=150 height=150>
+					<br/><font size=-2>正解用QRコード</font>
+				</td></tr></table>
+
+				<h2>ソースプログラム</h2>
+				<pre>{{ source_code }}</pre>
+
+				<h2>実行結果</h2>
+				<table border=1>
+					<tr><th>No.</th><th>入力ケース</th><th>出力</th><th>答え</th><th>成否</th></tr>
+					{% for result in results %}
+					<tr><th>{{ result['number'] }}</th><td>
+					{% if not result['input'] %}
+					(なし)
+					{% else %}
+					<pre>{{ result['input'] }}</pre>
+					{% endif %}
+						</td><td>
+							<pre>{{ result['output'] }}</pre>
+						</td><td>
+							<pre>{{ result['answer'] }}</pre>
+						</td>
+						{% if result['is_success'] %}
+						<td align=center>○</td>
+						{% else %}
+						<td align=center>★失敗★</td>
+						{% endif %}
+					</tr>
+					{% endfor %}
+	</body>
+</html>
